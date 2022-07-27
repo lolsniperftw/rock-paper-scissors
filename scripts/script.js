@@ -2,7 +2,7 @@ function getComputerChoice() {
     let choiceNumber = Math.floor(Math.random() * 3) + 1;
     let choiceString;
 
-    switch(choiceNumber) {
+    switch (choiceNumber) {
         case 1:
             choiceString = 'rock';
             break;
@@ -18,7 +18,7 @@ function getComputerChoice() {
 }
 
 function playRound(computerChoice, playerChoice) {
-    
+
     if (computerChoice === playerChoice) {
         return "It is a tie";
     }
@@ -50,20 +50,53 @@ function playRound(computerChoice, playerChoice) {
 }
 
 function game() {
-    
+
+
     let computerScore, playerScore;
     computerScore = playerScore = 0;
-    for (let i = 1; i <= 5; i++) {
-        const playerChoice = prompt("Enter choice");
-        let winner = playRound(getComputerChoice(), playerChoice.toLowerCase());
-        if (winner === 'You win!') {
-            playerScore++;
-        }
-        else if (winner === 'Computer wins!') {
-            computerScore++;
-        }
+
+
+    // getting choices divs
+    const playerChoiceDiv = document.querySelector('#player-choice');
+    const computerChoiceDiv = document.querySelector('#computer-choice');
+
+    // getting scores divs
+
+    const playerScoreDiv = document.querySelector('#player-score');
+    const computerScoreDiv = document.querySelector('#computer-score');
+
+    // event listener for buttons
+    const buttons = document.querySelectorAll('button');
+
+    buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+            let computerChoice = getComputerChoice();
+            let playerChoice = button.id;
+            playerChoiceDiv.textContent = playerChoice;
+            computerChoiceDiv.textContent = computerChoice;
+            let result = playRound(computerChoice, playerChoice);
+            if (result === "You win!") {
+                playerScore++;
+            }
+            else if (result === "Computer wins!") {
+                computerScore++;
+            }
+
+            playerScoreDiv.textContent = playerScore;
+            computerScoreDiv.textContent = computerScore;
+        })
+    })
+
+    if (playerScore === 5) {
+        playerScoreDiv.textContent =  0;
     }
-    console.log('Computer: ' + computerScore + ' Player: ' + playerScore);
+    else if (computerScore === 5) {
+        computerScoreDiv.textContent =  0;
+    }
 }
+
+
+
+
 
 game();
