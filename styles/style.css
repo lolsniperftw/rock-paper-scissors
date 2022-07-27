@@ -1,0 +1,16 @@
+body {
+
+    text-align: center;
+}
+
+#choices {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
+#scores {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
