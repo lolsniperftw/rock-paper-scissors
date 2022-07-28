@@ -1,3 +1,24 @@
+let computerScore, playerScore;
+computerScore = playerScore = 0;
+
+// getting choices divs
+const playerChoiceDiv = document.querySelector('#player-choice');
+const computerChoiceDiv = document.querySelector('#computer-choice');
+
+// getting scores divs
+
+const playerScoreDiv = document.querySelector('#player-score');
+const computerScoreDiv = document.querySelector('#computer-score');
+
+// getting game winner div
+const winnerDiv = document.querySelector('#winner');
+
+//getting the buttons
+const buttons = document.querySelectorAll('button:not(#try-again)');
+
+// getting try-again button
+const tryAgainButton = document.querySelector('#try-again');
+
 function getComputerChoice() {
     let choiceNumber = Math.floor(Math.random() * 3) + 1;
     let choiceString;
@@ -19,84 +40,84 @@ function getComputerChoice() {
 
 function playRound(computerChoice, playerChoice) {
 
-    if (computerChoice === playerChoice) {
-        return "It is a tie";
-    }
-
     if (computerChoice === 'rock' && playerChoice === 'scissors') {
-        return "Computer wins!";
+        computerScore++;
+        computerScoreDiv.textContent = computerScore;
     }
 
     if (computerChoice === 'paper' && playerChoice === 'rock') {
-        return "Computer wins!";
+        computerScore++;
+        computerScoreDiv.textContent = computerScore;
     }
 
     if (computerChoice === 'scissors' && playerChoice === 'paper') {
-        return "Computer wins!";
+        computerScore++;
+        computerScoreDiv.textContent = computerScore;
     }
 
     if (computerChoice === 'paper' && playerChoice === 'scissors') {
-        return "You win!";
+        playerScore++;
+        playerScoreDiv.textContent = playerScore;
     }
 
     if (computerChoice === 'scissors' && playerChoice === 'rock') {
-        return "You win!";
+        playerScore++;
+        playerScoreDiv.textContent = playerScore;
     }
 
     if (computerChoice === 'rock' && playerChoice === 'paper') {
-        return "You win!";
+        playerScore++;
+        playerScoreDiv.textContent = playerScore;
     }
+
+    checkWinner();
 
 }
 
-function game() {
+function checkWinner() {
 
-
-    let computerScore, playerScore;
-    computerScore = playerScore = 0;
-
-
-    // getting choices divs
-    const playerChoiceDiv = document.querySelector('#player-choice');
-    const computerChoiceDiv = document.querySelector('#computer-choice');
-
-    // getting scores divs
-
-    const playerScoreDiv = document.querySelector('#player-score');
-    const computerScoreDiv = document.querySelector('#computer-score');
-
-    // event listener for buttons
-    const buttons = document.querySelectorAll('button');
-
-    buttons.forEach((button) => {
-        button.addEventListener('click', () => {
-            let computerChoice = getComputerChoice();
-            let playerChoice = button.id;
-            playerChoiceDiv.textContent = playerChoice;
-            computerChoiceDiv.textContent = computerChoice;
-            let result = playRound(computerChoice, playerChoice);
-            if (result === "You win!") {
-                playerScore++;
-            }
-            else if (result === "Computer wins!") {
-                computerScore++;
-            }
-
-            playerScoreDiv.textContent = playerScore;
-            computerScoreDiv.textContent = computerScore;
-        })
-    })
+    if (computerScore === 5) {
+        winnerDiv.textContent = "Computer wins the game";
+        setButtonState('disable');
+        tryAgainButton.style.visibility = 'visible';
+    }
 
     if (playerScore === 5) {
-        playerScoreDiv.textContent =  0;
+        winnerDiv.textContent = "Player wins the game";
+        setButtonState('disable');
+        tryAgainButton.style.visibility = 'visible';
     }
-    else if (computerScore === 5) {
-        computerScoreDiv.textContent =  0;
-    }
+}
+
+function setButtonState(state) {
+    buttons.forEach((button) => {
+        if (state === 'disable')
+            button.disabled = true;
+        if (state === 'enable')
+            button.disabled = false;
+    })
 }
 
 
 
+// event listener for buttons
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        let computerChoice = getComputerChoice();
+        let playerChoice = button.id;
+        playerChoiceDiv.textContent = playerChoice;
+        computerChoiceDiv.textContent = computerChoice;
+        playRound(computerChoice, playerChoice);
+    })
+})
+
+// event listener for trying again button
+tryAgainButton.addEventListener('click', () => {
+    winnerDiv.textContent = '';
+    playerScoreDiv.textContent = playerScore = 0;
+    computerScoreDiv.textContent = computerScore = 0;
+    setButtonState('enable');
+    tryAgainButton.style.visibility = 'hidden';
+})
 
 
-game();
