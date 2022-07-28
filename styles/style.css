@@ -14,3 +14,12 @@ body {
     justify-content: center;
     gap: 50px;
 }
+
+#winner {
+    color: blue;
+    font-weight: 900;
+}
+
+#try-again {
+    visibility: hidden;
+}
